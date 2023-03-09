@@ -136,12 +136,20 @@ namespace Foreman
                 lua.SetMods(orderedMods);
 
                 lua["package.path"] = basePackagePath;
-                foreach (Mod mod in orderedMods)
+                foreach (Mod mod in orderedMods) {
+                    lua.SelectMod(mod);
                     mod.Load(lua, "settings.lua");
-                foreach (Mod mod in orderedMods)
+                }
+
+                foreach (Mod mod in orderedMods) {
+                    lua.SelectMod(mod);
                     mod.Load(lua, "settings-updates.lua");
-                foreach (Mod mod in orderedMods)
+                }
+
+                foreach (Mod mod in orderedMods) {
+                    lua.SelectMod(mod);
                     mod.Load(lua, "settings-final-fixes.lua");
+                }
 
                 settingsMap = ExtractSettings(lua);
             }
@@ -787,12 +795,17 @@ namespace Foreman
             }
 
             var e = new List<string>();
-            foreach (string placeholder in placeholders.Values) {
-                if (!SplitKey(placeholder, out var placeholderSection, out var placeholderName))
-                    return null;
+            foreach (dynamic placeholder in placeholders.Values) {
+                if (placeholder is string stringPlaceholder) {
+                    if (!SplitKey(stringPlaceholder, out var placeholderSection, out var placeholderName))
+                        return null;
+                    e.Add(placeholderSection);
+                    e.Add(placeholderName);
+                }
 
-                e.Add(placeholderSection);
-                e.Add(placeholderName);
+                if (placeholder is LuaTable tablePlaceholder) {
+                    continue; // TODO: Fix loading placeholders tree
+                }
             }
 
             return LocalizationInfo.Create(section, name, e);

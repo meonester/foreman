@@ -1,5 +1,6 @@
 namespace Foreman
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -80,8 +81,9 @@ namespace Foreman
                 }
             }
 
-            //Should be no edges (dependencies) left by here
+            //PrintDependencies();
 
+            //Should be no edges (dependencies) left by here
             L.Reverse();
             return L;
         }
@@ -103,10 +105,27 @@ namespace Foreman
 
         public bool DependencySatisfied(ModDependency dep)
         {
-            if (dep.Optional)
+            if (dep.Optional || dep.Kind == ModDependencyKind.Incompatible)
                 return true;
 
             return mods.Where(m => m.Enabled).Any(mod => mod.SatisfiesDependency(dep));
+        }
+
+        private void PrintDependencies()
+        {
+            for (int y = 0; y < mods.Count; y++) {
+                var sum = 0;
+                Debug.Write($"{mods[y].Name}:");
+
+                for (int x = 0; x < mods.Count; x++) {
+                    sum += adjacencyMatrix[x, y];
+                    if (adjacencyMatrix[x, y] > 0) {
+                        Debug.Write($" {mods[x].Name},");
+                    }
+                }
+
+                Debug.WriteLine($" => {sum}");
+            }
         }
     }
 }

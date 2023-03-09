@@ -23,7 +23,8 @@ namespace Foreman.Extensions
                 throw new ArgumentNullException(nameof(image));
             if (image.Format != PixelFormats.Bgra32 &&
                 image.Format != PixelFormats.Pbgra32)
-                throw new NotImplementedException($"Unsupported pixel format {image.Format}");
+                //throw new NotImplementedException($"Unsupported pixel format {image.Format}");
+                return Color.FromArgb(255, 128, 128, 128);
 
             var bytes = new byte[4];
             image.Resized(1, 1).CopyPixels(bytes, 4, 0);

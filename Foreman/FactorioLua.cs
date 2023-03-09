@@ -167,7 +167,7 @@ namespace Foreman
                 string relPath = module.Replace('.', '/') + ".lua";
                 string path = Path.Combine(coreMod.ModPath, "lualib", relPath);
                 if (File.Exists(path)) {
-                    loaderArg = path;
+                    loaderArg = new ModPath() { ModName = "core", Path = path, IsZip = false };
                     logger.Log("LUA: Resolving [{0}] '{1}' with: mod='{2}', entry='{3}'", currentMod?.Name, module, coreMod.Name, loaderArg);
                     return loader;
                 }
@@ -177,25 +177,36 @@ namespace Foreman
             return null;
         }
 
-        private object? PackageLoader(string module, string path)
+        private object? PackageLoader(string module, object? loaderArg)
         {
+            var modPath = loaderArg is ModPath args ? args : default;
+
             if (module == "serpent") {
                 using var stream = GetType().Assembly
                     .GetManifestResourceStream(typeof(Resources), "Serpent.lua");
                 return DoString(stream!.ReadAllText())?[0];
             }
 
-            if (currentMod == null)
+            if (currentMod == null || modPath.ModName == null)
                 return null;
 
             object? result;
-            if (Path.IsPathRooted(path) && File.Exists(path)) {
-                result = DoString(File.ReadAllText(path))?[0];
+            if (!modPath.IsZip && Path.IsPathRooted(modPath.Path) && File.Exists(modPath.Path)) {
+                result = DoString(File.ReadAllText(modPath.Path))?[0];
             } else {
-                result = currentMod.Loader(this, path);
+                var mod = mods[modPath.ModName];
+                var currentPath = modPath.Path.LastIndexOfAny(new[] { '/', '\\' });
+                mod.LuaPathContext.Push(currentPath > 0 ? modPath.Path[..currentPath] : "");
+                result = mod.Loader(this, modPath.Path);
+                mod.LuaPathContext.Pop();
             }
 
             return result;
+        }
+
+        public void SelectMod(Mod mod)
+        {
+            currentMod = mod;
         }
 
         public void PushMod(Mod mod)
