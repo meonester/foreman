@@ -345,8 +345,6 @@ namespace Foreman
             ");
         }
 
-
-
         public bool Search(string modulePath, out object? loaderArg)
         {
             loaderArg = null;
@@ -437,12 +435,11 @@ namespace Foreman
         LessThanOrEqual
     }
 
-
     [DebuggerDisplay("ModName = {ModName}, Path = {Path}, IsZip = {IsZip}")]
     public struct ModPath
     {
-        public string ModName { get; set; }
-        public string Path { get; set; }
-        public bool IsZip { get; set; }
+        public string ModName { get; init; }
+        public string Path { get; init; }
+        public bool IsZip { get; init; }
     }
 }

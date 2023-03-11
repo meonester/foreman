@@ -82,6 +82,13 @@ namespace Foreman
             }
 
             //PrintDependencies();
+            for (int i = 0; i < mods.Count; i++) {
+                for (int j = 0; j < mods.Count; j++) {
+                    if (adjacencyMatrix[i, j] == 1) {
+                        ErrorLogging.LogLine($"Dependencies between {mods[i]} and {mods[j]} were not resolved (possible circular dependency)");
+                    }
+                }
+            }
 
             //Should be no edges (dependencies) left by here
             L.Reverse();
