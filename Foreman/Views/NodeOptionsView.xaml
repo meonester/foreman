@@ -60,7 +60,7 @@
         <Button Content="{fx:Bind Module}" Style="{StaticResource ModuleSlotButton}"
                 Click="OnModuleSlotClicked"/>
         <TextBox x:Name="Count" Grid.Row="1" Margin="0,2,0,0"
-                 Text="{fx:Bind Count, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{fx:Bind Count, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
       </Grid>
       <DataTemplate.Triggers>
         <DataTrigger Binding="{Binding IsAggregated}" Value="False">
@@ -96,7 +96,7 @@
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <TextBox Margin="3" VerticalAlignment="Center" Text="{fx:FloatBinding Amount, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Grid.Column="1" Margin="3" Text="{fx:Bind AmountUnit}" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Margin="3" Text="{fx:Bind AmountUnit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
       </Grid>
       <StackPanel Visibility="{Binding CanEditAssembler, Converter={StaticResource BooleanToVisibilityConverter}}">
         <RadioButton Margin="3" Content="Count" x:Name="CountCheckBox"
@@ -153,19 +153,19 @@
       <TextBlock Grid.Row="5" Margin="3" Text="Speed Bonus:"
                  HorizontalAlignment="Right" VerticalAlignment="Center"/>
       <TextBox Grid.Row="5" Grid.Column="1" Margin="3"
-               Text="{fx:Bind Path=SpeedBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged}"
+               Text="{fx:Bind Path=SpeedBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                IsReadOnly="{fx:Bind CanOverrideBonus, Converter={StaticResource NegateBooleanConverter}}"/>
 
       <TextBlock Grid.Row="6" Margin="3" Text="Productivity Bonus:"
                  HorizontalAlignment="Right" VerticalAlignment="Center"/>
       <TextBox Grid.Row="6" Grid.Column="1" Margin="3"
-               Text="{fx:Bind Path=ProductivityBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged}"
+               Text="{fx:Bind Path=ProductivityBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                IsReadOnly="{fx:Bind CanOverrideBonus, Converter={StaticResource NegateBooleanConverter}}"/>
 
       <TextBlock Grid.Row="7" Margin="3" Text="Consumption Bonus:"
                  HorizontalAlignment="Right" VerticalAlignment="Center"/>
       <TextBox Grid.Row="7" Grid.Column="1" Margin="3"
-               Text="{fx:Bind Path=ConsumptionBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged}"
+               Text="{fx:Bind Path=ConsumptionBonus, StringFormat=F2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                IsReadOnly="{fx:Bind CanOverrideBonus, Converter={StaticResource NegateBooleanConverter}}"/>
     </Grid>
   </Grid>
