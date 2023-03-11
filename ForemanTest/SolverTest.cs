@@ -329,7 +329,7 @@ namespace ForemanTest
             GraphOptimisations.FindOptimalGraphToSatisfyFixedNodes(data.Graph);
 
             AssertFloatsAreEqual(10, data.ConsumedRate("Plate"));
-            AssertFloatsAreEqual(20, data.RecipeInputRate("furnace", "Ore"));
+            AssertFloatsAreEqual(25, data.RecipeInputRate("furnace", "Ore"));
         }
 
         [Fact]

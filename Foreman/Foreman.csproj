@@ -3,7 +3,7 @@
     <ProjectGuid>{C574A82A-02F7-4A10-8C93-AF4638ECDE0D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
     <Deterministic>true</Deterministic>
@@ -24,7 +24,7 @@
     <Description>Flowchart generation program for Factorio</Description>
     <Company />
     <Authors />
-    <Copyright>Copyright ©  2014 Nick Powell</Copyright>
+    <Copyright>Copyright © 2014 Nick Powell</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon>Resources\ForemanLogo.ico</ApplicationIcon>
   </PropertyGroup>
@@ -57,19 +57,17 @@
     <EmbeddedResource Include="UnknownIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.OrTools" Version="9.0.9048" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Google.OrTools" Version="9.5.2237" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.3.2.1" />
-    <PackageReference Include="PresentationTheme.Aero" Version="0.6.3" />
+    <PackageReference Include="PresentationTheme.Aero" Version="0.6.4" />
   </ItemGroup>
   <Target Name="CopyLuaDLL" AfterTargets="AfterBuild">
     <CreateItem Include="$(SolutionDir)lib\lua52.dll">
-      <Output ItemName="DllsToBeCopied" TaskParameter="Include"/>
+      <Output ItemName="DllsToBeCopied" TaskParameter="Include" />
     </CreateItem>
-    <Copy SourceFiles="@(DllsToBeCopied)"
-          DestinationFolder="$(OutDir)"
-          Condition="Exists('%(FullPath)')"/>
-    <Message Importance="high" Text="Copy $(SolutionDir)lib\lua52.dll -> $(OutDir)"/>
+    <Copy SourceFiles="@(DllsToBeCopied)" DestinationFolder="$(OutDir)" Condition="Exists('%(FullPath)')" />
+    <Message Importance="high" Text="Copy $(SolutionDir)lib\lua52.dll -&gt; $(OutDir)" />
   </Target>
 </Project>
