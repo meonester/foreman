@@ -189,8 +189,7 @@ namespace Foreman
                         __index = function()
                             return {value = 0}
                         end
-                    })
-");
+                    })");
 
                 lua.NewTable("settings");
                 foreach (var (name, value) in settingsMap) {
@@ -635,19 +634,31 @@ namespace Foreman
         private BitmapSource? LoadCompositeModImage(
             LuaTable icons, int? compositeIconSize)
         {
+            int? canvasSize = null;
+            double? outputScale = null;
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen()) {
-                bool first = true;
-
-                if (compositeIconSize == null) {
+                double? qualityScale = null;
+                {
                     LuaTable iconTable = icons.Values.OfType<LuaTable>().First();
                     int? iconSize = iconTable.Int("icon_size");
+                    var scale = iconTable.DoubleOrDefault("scale", 1.0);
                     if (iconSize == null)
                         return null;
 
-                    compositeIconSize = iconSize / 2;
+                    if (compositeIconSize == null) {
+                        var tempSize = iconSize.Value * scale;
+                        if (tempSize < 128) {
+                            qualityScale = 128 / tempSize;
+                            tempSize = 128;
+                        }
+                        compositeIconSize = (int)(tempSize);
+                    } else if (Math.Abs(iconSize.Value * scale - compositeIconSize.Value) >= 0.1) {
+                        canvasSize = (int)(iconSize.Value * scale);
+                        outputScale =  (double)compositeIconSize.Value / canvasSize.Value;
+                    }
                 }
-
+                
                 foreach (LuaTable iconTable in icons.Values) {
                     var iconPath = iconTable.String("icon");
                     var iconSize = iconTable.Int("icon_size") ?? compositeIconSize;
@@ -655,25 +666,17 @@ namespace Foreman
                     var scale = iconTable.DoubleOrDefault("scale", 1.0);
                     var shift = iconTable.VectorOrDefault("shift", new Vector()).Value;
                     var tint = iconTable.ColorOrDefault("tint", Colors.White);
-
-                    if (first) {
-                        first = false;
-                        // The first image seems to always be halved when looking
-                        // in-game. With scale=1 the offsets of other layers are
-                        // too small.
-                        scale = 0.5;
-                    }
-
+                    
                     BitmapSource? icon = LoadModImage(iconPath, iconSize, iconMipmaps);
                     if (icon == null)
                         return null;
                     if (iconSize == null)
                         return null;
 
-                    double length = iconSize.Value * scale;
-                    double offset = (compositeIconSize.Value - length) / 2;
+                    double length = iconSize.Value * scale * (qualityScale ?? 1.0);
+                    double offset = ((canvasSize ?? compositeIconSize).Value - length) / 2;
                     var rect = new Rect(
-                        new Point(offset, offset) + shift,
+                        new Point(offset, offset) + ((qualityScale ?? 1.0) * shift),
                         new Size(length, length));
 
                     if (tint.Value.A == 0) {
@@ -681,7 +684,7 @@ namespace Foreman
                     } else if (tint.Value == Colors.White) {
                         dc.DrawImage(icon, rect);
                     } else {
-                        dc.DrawImage(icon, rect);
+                        //dc.DrawImage(icon, rect);
                         dc.PushOpacityMask(new ImageBrush(icon));
                         dc.DrawRectangle(new SolidColorBrush(tint.Value), null, rect);
                         dc.Pop();
@@ -689,6 +692,10 @@ namespace Foreman
                 }
             }
 
+            if (outputScale.HasValue) {
+                visual.Transform = new ScaleTransform(outputScale.Value, outputScale.Value);
+            }
+            
             var image = new RenderTargetBitmap(
                 compositeIconSize.Value, compositeIconSize.Value, 96, 96, PixelFormats.Pbgra32);
             image.Render(visual);
