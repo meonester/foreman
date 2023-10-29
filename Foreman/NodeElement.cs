@@ -287,9 +287,9 @@ namespace Foreman
 
         private string GetPinLabel(Item item, PinKind linkType)
         {
-            string line1Format = "{0:0.####}{1}";
-            string line2Format = "\n({0:0.####}{1})";
-            string line0Format = "[{0:0.####}{1}]\n";
+            string line1Format = "{0:0.##}{1}";
+            string line2Format = "\n({0:0.##}{1})";
+            string line0Format = "[{0:0.##}{1}]\n";
             string finalString;
 
             string unit = "";

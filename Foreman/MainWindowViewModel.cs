@@ -532,7 +532,7 @@ namespace Foreman
             dialog.Filter = "JSON Files (*.json)|*.json|All files (*.*)|*.*";
             dialog.AddExtension = true;
             dialog.OverwritePrompt = true;
-            dialog.FileName = currentGraphFile ?? "Flowchart.json";
+            dialog.FileName = currentGraphFile ?? "flowchart.json";
             if (dialog.ShowDialog(view) != true)
                 return Task.CompletedTask;
 

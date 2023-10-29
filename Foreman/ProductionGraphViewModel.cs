@@ -159,8 +159,8 @@ namespace Foreman
 
                 nodePositions.Last().AddRange(nodeOrder.OfType<SupplyNode>());
 
-                int marginX = 100;
-                int marginY = 200;
+                int marginX = 50;
+                int marginY = 50;
                 double y = marginY;
                 var tierWidths = new double[nodePositions.Length];
                 for (int i = 0; i < nodePositions.Length; i++) {
@@ -174,8 +174,8 @@ namespace Foreman
 
                         var renderSize = control.RenderSize;
 
-                        x += Math.Max(renderSize.Width, 150) + marginX;
-                        maxHeight = Math.Max(Math.Max(renderSize.Height, 100), maxHeight);
+                        x += Math.Max(renderSize.Width, 100) + marginX;
+                        maxHeight = Math.Max(Math.Max(renderSize.Height, 50), maxHeight);
                     }
 
                     if (maxHeight > 0) // Don't add any height for empty tiers
