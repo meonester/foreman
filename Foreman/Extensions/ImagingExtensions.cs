@@ -8,6 +8,15 @@ namespace Foreman.Extensions
 
     public static class ImagingExtensions
     {
+        public static void SavePNG(this BitmapImage image, string filePath)
+        {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+            
+            using var fileStream = new FileStream(filePath, FileMode.Create);
+            encoder.Save(fileStream);
+        }
+        
         public static BitmapSource Resized(this BitmapSource image, int width, int height)
         {
             return new TransformedBitmap(
