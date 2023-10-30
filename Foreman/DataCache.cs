@@ -2,6 +2,7 @@ namespace Foreman
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
@@ -634,30 +635,22 @@ namespace Foreman
         private BitmapSource? LoadCompositeModImage(
             LuaTable icons, int? compositeIconSize)
         {
-            int? canvasSize = null;
-            double? outputScale = null;
+            int canvasSize;
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen()) {
-                double? qualityScale = null;
-                {
-                    LuaTable iconTable = icons.Values.OfType<LuaTable>().First();
-                    int? iconSize = iconTable.Int("icon_size");
-                    var scale = iconTable.DoubleOrDefault("scale", 1.0);
-                    if (iconSize == null)
-                        return null;
-
-                    if (compositeIconSize == null) {
-                        var tempSize = iconSize.Value * scale;
-                        if (tempSize < 128) {
-                            qualityScale = 128 / tempSize;
-                            tempSize = 128;
-                        }
-                        compositeIconSize = (int)(tempSize);
-                    } else if (Math.Abs(iconSize.Value * scale - compositeIconSize.Value) >= 0.1) {
-                        canvasSize = (int)(iconSize.Value * scale);
-                        outputScale =  (double)compositeIconSize.Value / canvasSize.Value;
-                    }
+                
+                double CalculateFinalSize(LuaTable luaTable) => 
+                    luaTable.IntOrDefault("icon_size", compositeIconSize ?? 32) * luaTable.DoubleOrDefault("scale", 1.0);
+                LuaTable biggestLayer = icons.Values.OfType<LuaTable>()
+                    .Aggregate((lt1, lt2) => CalculateFinalSize(lt1) >= CalculateFinalSize(lt2) ? lt1 : lt2);
+                
+                var bestLayerFinalSize = CalculateFinalSize(biggestLayer);
+                if (compositeIconSize == null) {
+                    compositeIconSize = canvasSize = Math.Max((int)bestLayerFinalSize, 128);
+                } else {
+                    canvasSize = Math.Max(compositeIconSize.Value, 128);
                 }
+                double upscaleFactor = canvasSize / bestLayerFinalSize;
                 
                 foreach (LuaTable iconTable in icons.Values) {
                     var iconPath = iconTable.String("icon");
@@ -673,11 +666,9 @@ namespace Foreman
                     if (iconSize == null)
                         return null;
 
-                    double length = iconSize.Value * scale * (qualityScale ?? 1.0);
-                    double offset = ((canvasSize ?? compositeIconSize).Value - length) / 2;
-                    var rect = new Rect(
-                        new Point(offset, offset) + ((qualityScale ?? 1.0) * shift),
-                        new Size(length, length));
+                    double length = iconSize.Value * scale * upscaleFactor;
+                    double offset = (canvasSize - length) / 2;
+                    var rect = new Rect(new Point(offset, offset) + (shift * upscaleFactor), new Size(length, length));
 
                     if (tint.Value.A == 0) {
                         // Skip
@@ -692,12 +683,7 @@ namespace Foreman
                 }
             }
 
-            if (outputScale.HasValue) {
-                visual.Transform = new ScaleTransform(outputScale.Value, outputScale.Value);
-            }
-            
-            var image = new RenderTargetBitmap(
-                compositeIconSize.Value, compositeIconSize.Value, 96, 96, PixelFormats.Pbgra32);
+            var image = new RenderTargetBitmap(canvasSize, canvasSize, 96, 96, PixelFormats.Pbgra32);
             image.Render(visual);
             image.Freeze();
 
@@ -856,12 +842,11 @@ namespace Foreman
                 Dictionary<Item, float> ingredients = ExtractIngredientsFromLuaRecipe(values);
                 Dictionary<Item, float> results = ExtractResultsFromLuaRecipe(values);
 
-                var newRecipe = new Recipe(
-                    name, time, ingredients, results) {
+                var newRecipe = new Recipe(name, time, ingredients, results) {
                     Category = values.StringOrDefault("category", "crafting"),
-                    Icon = LoadModImage(values)
+                    Icon = LoadModImage(values),
+                    LocalizedName = GetLocalizationInfo(values)
                 };
-                newRecipe.LocalizedName = GetLocalizationInfo(values);
 
                 foreach (Item result in results.Keys)
                     result.Recipes.Add(newRecipe);
