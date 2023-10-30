@@ -384,7 +384,8 @@ namespace Foreman
         private void ReportErrors()
         {
             if (FailedModRegistrations.Any()) {
-                ErrorLogging.LogLine("There were errors setting the lua path variable or loader for the following mods:");
+                ErrorLogging.LogLine(
+                    "There were errors setting the lua path variable or loader for the following mods:");
                 foreach (string dir in FailedModRegistrations.Keys)
                     ErrorLogging.LogLine($"{dir} ({FailedModRegistrations[dir].Message})");
             }
@@ -404,6 +405,7 @@ namespace Foreman
                 foreach (string dir in Directory.EnumerateDirectories(DataPath))
                     ReadModInfoFile(dir);
             }
+
             if (Directory.Exists(ModPath)) {
                 foreach (string dir in Directory.EnumerateDirectories(ModPath))
                     ReadModInfoFile(dir);
@@ -436,6 +438,7 @@ namespace Foreman
                     var split = s!.Split('|');
                     splitModStrings.Add(split[0], split[1]);
                 }
+
                 foreach (Mod mod in Mods) {
                     if (splitModStrings.TryGetValue(mod.Name, out var value)) {
                         mod.Enabled = value == "True";
@@ -638,20 +641,22 @@ namespace Foreman
             int canvasSize;
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen()) {
-                
-                double CalculateFinalSize(LuaTable luaTable) => 
-                    luaTable.IntOrDefault("icon_size", compositeIconSize ?? 32) * luaTable.DoubleOrDefault("scale", 1.0);
+                double CalculateFinalSize(LuaTable luaTable) =>
+                    luaTable.IntOrDefault("icon_size", compositeIconSize ?? 32) *
+                    luaTable.DoubleOrDefault("scale", 1.0);
+
                 LuaTable biggestLayer = icons.Values.OfType<LuaTable>()
                     .Aggregate((lt1, lt2) => CalculateFinalSize(lt1) >= CalculateFinalSize(lt2) ? lt1 : lt2);
-                
+
                 var bestLayerFinalSize = CalculateFinalSize(biggestLayer);
                 if (compositeIconSize == null) {
                     compositeIconSize = canvasSize = Math.Max((int)bestLayerFinalSize, 128);
                 } else {
                     canvasSize = Math.Max(compositeIconSize.Value, 128);
                 }
+
                 double upscaleFactor = canvasSize / bestLayerFinalSize;
-                
+
                 foreach (LuaTable iconTable in icons.Values) {
                     var iconPath = iconTable.String("icon");
                     var iconSize = iconTable.Int("icon_size") ?? compositeIconSize;
@@ -659,7 +664,7 @@ namespace Foreman
                     var scale = iconTable.DoubleOrDefault("scale", 1.0);
                     var shift = iconTable.VectorOrDefault("shift", new Vector()).Value;
                     var tint = iconTable.ColorOrDefault("tint", Colors.White);
-                    
+
                     BitmapSource? icon = LoadModImage(iconPath, iconSize, iconMipmaps);
                     if (icon == null)
                         return null;
@@ -1142,6 +1147,7 @@ namespace Foreman
                 if (resultCount == 0f) {
                     resultCount = 1f;
                 }
+
                 results.Add(FindOrCreateUnknownItem(resultName), resultCount);
             } else {
                 // If we can't read results, try difficulty/results
@@ -1177,6 +1183,7 @@ namespace Foreman
                     ErrorLogging.LogLine($"Error reading results from {values}.");
                 }
             }
+
             return results;
         }
 
