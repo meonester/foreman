@@ -635,8 +635,7 @@ namespace Foreman
             return null;
         }
 
-        private BitmapSource? LoadCompositeModImage(
-            LuaTable icons, int? compositeIconSize)
+        private BitmapSource? LoadCompositeModImage(LuaTable icons, int? compositeIconSize)
         {
             int canvasSize;
             var visual = new DrawingVisual();
