@@ -138,8 +138,8 @@ namespace Foreman
 
         public void ClearXOrder()
         {
-            if (xOrder != null)
-                Debug.WriteLine("[{0}] {1}: clear", Kind, Item);
+            // if (xOrder != null)
+            //     Debug.WriteLine("[{0}] {1}: clear", Kind, Item);
             xOrder = null;
         }
 
@@ -204,7 +204,7 @@ namespace Foreman
 
             int sort = Convert.ToInt32(Math.Atan2(diff.X, diff.Y) * 1000);
 
-            Debug.WriteLine("[{0}] {1}: {2}, {3}, {4} -> {5}", Kind, Item, center1, center2, diff, sort);
+            //Debug.WriteLine("[{0}] {1}: {2}, {3}, {4} -> {5}", Kind, Item, center1, center2, diff, sort);
             return sort;
         }
     }

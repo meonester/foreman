@@ -648,13 +648,10 @@ namespace Foreman
                     .Aggregate((lt1, lt2) => CalculateFinalSize(lt1) >= CalculateFinalSize(lt2) ? lt1 : lt2);
 
                 var bestLayerFinalSize = CalculateFinalSize(biggestLayer);
-                if (compositeIconSize == null) {
-                    compositeIconSize = canvasSize = Math.Max((int)bestLayerFinalSize, 128);
-                } else {
-                    canvasSize = Math.Max(compositeIconSize.Value, 128);
-                }
-
-                double upscaleFactor = canvasSize / bestLayerFinalSize;
+                compositeIconSize ??= (int)bestLayerFinalSize;
+                
+                canvasSize = Math.Max(compositeIconSize.Value, 128);
+                var upscaleFactor = canvasSize / bestLayerFinalSize;
 
                 foreach (LuaTable iconTable in icons.Values) {
                     var iconPath = iconTable.String("icon");

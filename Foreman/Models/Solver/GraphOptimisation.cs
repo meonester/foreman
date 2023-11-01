@@ -45,7 +45,7 @@ namespace Foreman
 
             var solution = solver.Solve();
 
-            Debug.WriteLine(solver.ToString());
+            //Debug.WriteLine(solver.ToString());
 
             // TODO: Handle BIG NUMBERS
             // TODO: Return error in solution!?

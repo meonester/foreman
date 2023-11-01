@@ -17,14 +17,14 @@ namespace Foreman
             return new();
         }
 
-        public GoogleSolver()
+        private GoogleSolver()
         {
             solver = Solver.CreateSolver("GLOP_LINEAR_PROGRAMMING");
             variables = new List<Variable>();
             constraints = new List<Constraint>();
         }
 
-        public void PrintTo(StringBuilder buffer)
+        private void PrintTo(StringBuilder buffer)
         {
             var objective = solver.Objective();
             var culture = CultureInfo.InvariantCulture;

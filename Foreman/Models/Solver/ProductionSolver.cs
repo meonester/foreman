@@ -100,8 +100,10 @@ namespace Foreman
 
             objective.SetMinimization();
 
-            if (solver.Solve() != Solver.ResultStatus.OPTIMAL)
-                return null;
+            var result = solver.Solve();
+            Debug.WriteLine(result.ToString());
+            //if (solver.Solve() != Solver.ResultStatus.OPTIMAL)
+                //return null;
 
             var nodeSolutions = nodes
                 .ToDictionary(x => x, x => SolutionFor(Tuple.Create(x, RateType.ACTUAL)));
