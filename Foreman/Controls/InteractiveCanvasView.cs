@@ -105,7 +105,7 @@ namespace Foreman.Controls
         private IInteractiveCanvasViewModel? ViewModel => DataContext as IInteractiveCanvasViewModel;
 
         private List<InteractiveCanvasItem> SelectedItems { get; } =
-            new();
+            [];
 
         private IEnumerable<UIElement> SelectedDraggables
         {
@@ -504,7 +504,7 @@ namespace Foreman.Controls
         private class DragHandler : MouseGestureHandler
         {
             private readonly InteractiveCanvasView view;
-            private readonly List<Entry> draggedElements = new();
+            private readonly List<Entry> draggedElements = [];
 
             private InteractiveCanvasItem? deferredSelectElement;
             private Point startPosition;

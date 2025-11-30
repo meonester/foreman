@@ -23,13 +23,13 @@ namespace Foreman.Extensions
 
         public static HashSet<T> ToSet<T>(this IEnumerable<T> enumerable)
         {
-            return new(enumerable);
+            return [..enumerable];
         }
 
         public static HashSet<TValue> ToSet<T, TValue>(
             this IEnumerable<T> enumerable, Func<T, TValue> selector)
         {
-            return new(enumerable.Select(selector));
+            return [..enumerable.Select(selector)];
         }
 
         public static int RemoveWhere<T>(this ICollection<T> collection, Predicate<T> match)

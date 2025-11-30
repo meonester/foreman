@@ -3,7 +3,7 @@
     <ProjectGuid>{C574A82A-02F7-4A10-8C93-AF4638ECDE0D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
     <Deterministic>true</Deterministic>
@@ -54,7 +54,7 @@
     <EmbeddedResource Include="UnknownIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.OrTools" Version="9.5.2237" />
+    <PackageReference Include="Google.OrTools" Version="9.14.6206" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.3.2.1" />

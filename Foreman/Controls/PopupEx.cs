@@ -39,7 +39,7 @@ namespace Foreman.Controls
                 securityCriticalDataClassOfWindowCtor =
                     windowsBase.GetType("MS.Internal.SecurityCriticalDataClass`1")!
                         .MakeGenericType(typeof(HwndSource))
-                        .GetConstructor(nonPublicInstance, null, new[] { typeof(HwndSource) }, null)!;
+                        .GetConstructor(nonPublicInstance, null, [typeof(HwndSource)], null)!;
 
                 var oldBuildWindow = popupSecurityHelperType.GetMethod(
                     "BuildWindow", BindingFlags.Instance | BindingFlags.NonPublic)!;
@@ -153,7 +153,7 @@ namespace Foreman.Controls
 
                 // initialize the private critical window object
                 pshWindowField.SetValue(psh, securityCriticalDataClassOfWindowCtor.Invoke(
-                    new object[] { newWindow }));
+                    [newWindow]));
 
                 // Set background color
                 var hwndTarget = newWindow.CompositionTarget;
@@ -167,7 +167,7 @@ namespace Foreman.Controls
 
             private static bool ConnectedToForegroundWindow(IntPtr window)
             {
-                return (bool)pshConnectedToForegroundWindowMethod.Invoke(null, new object[] { window })!;
+                return (bool)pshConnectedToForegroundWindowMethod.Invoke(null, [window])!;
             }
 
             [SecurityCritical]

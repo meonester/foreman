@@ -9,7 +9,6 @@ namespace Foreman.Controls
     public class ContentAdorner : Adorner
     {
         private readonly FrameworkElement child;
-        private Point position;
 
         public ContentAdorner(UIElement adornedElement, object content)
             : base(adornedElement)
@@ -39,10 +38,10 @@ namespace Foreman.Controls
 
         public Point Position
         {
-            get => position;
+            get;
             set
             {
-                position = value;
+                field = value;
                 var layer = Parent as AdornerLayer;
                 layer?.Update(AdornedElement);
             }

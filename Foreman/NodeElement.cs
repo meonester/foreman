@@ -22,17 +22,6 @@ namespace Foreman
 
         private static Popup? nodeRatePopup;
 
-        private Point position;
-        private Size renderSize;
-        private ImageSource? icon;
-        private string displayedNumber = string.Empty;
-        private string text = string.Empty;
-        private string? balloonText;
-        private Color backgroundColor;
-        private bool showText = true;
-        private bool showNumber;
-        private bool showIcon;
-
         public NodeElement(ProductionNode displayedNode, ProductionGraphViewModel parent)
         {
             Parent = parent;
@@ -58,18 +47,18 @@ namespace Foreman
 
         public Point Position
         {
-            get => position;
+            get;
             set
             {
-                if (SetProperty(ref position, value))
+                if (SetProperty(ref field, value))
                     OnPositionChanged();
             }
         }
 
         public Size RenderSize
         {
-            get => renderSize;
-            set => SetProperty(ref renderSize, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public double RenderWidth
@@ -86,57 +75,57 @@ namespace Foreman
 
         public ImageSource? Icon
         {
-            get => icon;
-            set => SetProperty(ref icon, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public string DisplayedNumber
         {
-            get => displayedNumber;
-            set => SetProperty(ref displayedNumber, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         public string Text
         {
-            get => text;
-            set => SetProperty(ref text, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         public string? BalloonText
         {
-            get => balloonText;
-            set => SetProperty(ref balloonText, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public Color BackgroundColor
         {
-            get => backgroundColor;
-            set => SetProperty(ref backgroundColor, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public bool ShowText
         {
-            get => showText;
-            set => SetProperty(ref showText, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = true;
 
         public bool ShowNumber
         {
-            get => showNumber;
-            set => SetProperty(ref showNumber, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public bool ShowIcon
         {
-            get => showIcon;
-            set => SetProperty(ref showIcon, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public override bool IsDraggable => true;
         public override bool IsSelectable => true;
 
-        public ObservableCollection<Pin> Inputs { get; } = new();
-        public ObservableCollection<Pin> Outputs { get; } = new();
+        public ObservableCollection<Pin> Inputs { get; } = [];
+        public ObservableCollection<Pin> Outputs { get; } = [];
 
         public IEnumerable<Pin> Pins => Inputs.Union(Outputs);
         public IEnumerable<Connector> Connectors => Pins.SelectMany(x => x.Connectors);
@@ -490,7 +479,7 @@ namespace Foreman
                 var baseSpeed = assembler.Speed;
                 var actualSpeed = assembler.GetSpeed(DisplayedNode.BeaconModules.GetSpeedBonus(), permutation.Modules);
                 buffer.AppendFormat("\n  Speed: {0:F2}", actualSpeed);
-                if (actualSpeed != baseSpeed)
+                if (Math.Abs(actualSpeed - baseSpeed) > double.Epsilon)
                     buffer.AppendFormat(" ({0:+0;−0}%)", ((actualSpeed / baseSpeed) - 1) * 100);
             }
         }

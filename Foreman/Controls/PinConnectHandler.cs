@@ -176,9 +176,9 @@ namespace Foreman.Controls
 
             var connector = (ConnectorShape)((Canvas)connectorAdorner.Child).Children[0];
             if (sourcePin.Kind == PinKind.Output)
-                connector.Points = new PointCollection { startPosition, canvasPos };
+                connector.Points = [startPosition, canvasPos];
             else
-                connector.Points = new PointCollection { canvasPos, startPosition };
+                connector.Points = [canvasPos, startPosition];
 
             Pin? candidatePin = FindPin(position);
 

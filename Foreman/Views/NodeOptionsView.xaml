@@ -7,7 +7,7 @@
              xmlns:views="clr-namespace:Foreman.Views"
              xmlns:fx="clr-namespace:Foreman.Infrastructure.Windows"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type views:NodeOptionsViewModel}}"
+             d:DataContext="{d:DesignInstance {x:Type f:NodeOptionsViewModel}}"
              d:DesignWidth="500"
              d:DesignHeight="300">
   <UserControl.Resources>
@@ -51,7 +51,7 @@
       </Style.Triggers>
     </Style>
 
-    <DataTemplate x:Key="ModuleSlotTemplate" DataType="{x:Type views:ModuleSlot}">
+    <DataTemplate x:Key="ModuleSlotTemplate" DataType="{x:Type f:ModuleSlot}">
       <Grid Margin="0,0,2,2">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>

@@ -96,8 +96,8 @@ namespace Foreman
         public abstract IEnumerable<Item> Outputs { get; }
         public ModuleBag BeaconModules { get; } = new();
 
-        public List<NodeLink> InputLinks { get; } = new();
-        public List<NodeLink> OutputLinks { get; } = new();
+        public List<NodeLink> InputLinks { get; } = [];
+        public List<NodeLink> OutputLinks { get; } = [];
         public RateType RateType { get; set; } = RateType.Auto;
 
         // The rate the solver calculated is appropriate for this node.
@@ -494,7 +494,7 @@ namespace Foreman
         public IEnumerable<Miner> GetAllowedAssemblers()
         {
             if (Resource == null)
-                return Enumerable.Empty<Miner>();
+                return [];
 
             return DataCache.Current.Miners.Values
                 .Where(a => a.Enabled)

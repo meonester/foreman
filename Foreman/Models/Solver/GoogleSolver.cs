@@ -20,8 +20,8 @@ namespace Foreman
         private GoogleSolver()
         {
             solver = Solver.CreateSolver("GLOP_LINEAR_PROGRAMMING");
-            variables = new List<Variable>();
-            constraints = new List<Constraint>();
+            variables = [];
+            constraints = [];
         }
 
         private void PrintTo(StringBuilder buffer)

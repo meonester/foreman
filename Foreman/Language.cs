@@ -10,13 +10,13 @@ namespace Foreman
         }
 
         public string Name { get; }
-        private string? localName;
 
         [AllowNull]
+        [field: AllowNull, MaybeNull]
         public string LocalName
         {
-            get => !string.IsNullOrWhiteSpace(localName) ? localName : Name;
-            set => localName = value;
+            get => !string.IsNullOrWhiteSpace(field) ? field : Name;
+            set;
         }
     }
 }

@@ -6,15 +6,6 @@ namespace Foreman
 
     public class Connector : GraphElement
     {
-        private Pin? source;
-        private Pin? destination;
-
-        private Point sourceHotspot;
-        private Point destinationHotspot;
-
-        private PointCollection? points;
-        private Color fillColor;
-
         public Connector(NodeLink displayedLink, Pin? source, Pin? destination)
         {
             DisplayedLink = displayedLink;
@@ -35,24 +26,24 @@ namespace Foreman
 
         public Pin? Source
         {
-            get => source;
+            get;
             set
             {
-                if (source == value)
+                if (field == value)
                     return;
 
-                if (source != null) {
-                    source.RemoveConnector(this);
-                    source.HotspotUpdated -= OnSourceHotspotUpdated;
+                if (field != null) {
+                    field.RemoveConnector(this);
+                    field.HotspotUpdated -= OnSourceHotspotUpdated;
                 }
 
-                Pin? oldSource = source;
-                source = value;
+                Pin? oldSource = field;
+                field = value;
 
-                if (source != null) {
-                    source.AddConnector(this);
-                    source.HotspotUpdated += OnSourceHotspotUpdated;
-                    SourceHotspot = source.Hotspot;
+                if (field != null) {
+                    field.AddConnector(this);
+                    field.HotspotUpdated += OnSourceHotspotUpdated;
+                    SourceHotspot = field.Hotspot;
                 }
 
                 oldSource?.RaiseConnectionChanged();
@@ -63,24 +54,24 @@ namespace Foreman
 
         public Pin? Destination
         {
-            get => destination;
+            get;
             set
             {
-                if (destination == value)
+                if (field == value)
                     return;
 
-                if (destination != null) {
-                    destination.RemoveConnector(this);
-                    destination.HotspotUpdated -= OnDestinationHotspotUpdated;
+                if (field != null) {
+                    field.RemoveConnector(this);
+                    field.HotspotUpdated -= OnDestinationHotspotUpdated;
                 }
 
-                Pin? oldDestination = destination;
-                destination = value;
+                Pin? oldDestination = field;
+                field = value;
 
-                if (destination != null) {
-                    destination.AddConnector(this);
-                    destination.HotspotUpdated += OnDestinationHotspotUpdated;
-                    DestinationHotspot = destination.Hotspot;
+                if (field != null) {
+                    field.AddConnector(this);
+                    field.HotspotUpdated += OnDestinationHotspotUpdated;
+                    DestinationHotspot = field.Hotspot;
                 }
 
                 oldDestination?.RaiseConnectionChanged();
@@ -91,34 +82,34 @@ namespace Foreman
 
         public Point SourceHotspot
         {
-            get => sourceHotspot;
+            get;
             set
             {
-                if (SetProperty(ref sourceHotspot, value))
+                if (SetProperty(ref field, value))
                     ComputeConnectorPoints();
             }
         }
 
         public Point DestinationHotspot
         {
-            get => destinationHotspot;
+            get;
             set
             {
-                if (SetProperty(ref destinationHotspot, value))
+                if (SetProperty(ref field, value))
                     ComputeConnectorPoints();
             }
         }
 
         public PointCollection? Points
         {
-            get => points;
-            set => SetProperty(ref points, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public Color FillColor
         {
-            get => fillColor;
-            set => SetProperty(ref fillColor, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public event EventHandler<EventArgs>? ConnectionChanged;

@@ -8,7 +8,6 @@ namespace Foreman.Controls
     public class FrameworkElementAdorner : Adorner
     {
         private readonly FrameworkElement root;
-        private Point position;
 
         public FrameworkElementAdorner(UIElement adornedElement, FrameworkElement child)
             : base(adornedElement)
@@ -33,10 +32,10 @@ namespace Foreman.Controls
 
         public Point Position
         {
-            get => position;
+            get;
             set
             {
-                position = value;
+                field = value;
                 var layer = Parent as AdornerLayer;
                 layer?.Update(AdornedElement);
             }

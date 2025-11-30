@@ -123,8 +123,8 @@ namespace Foreman
             : base(name)
         {
             Enabled = true;
-            Categories = new List<string>();
-            AllowedEffects = new List<string>();
+            Categories = [];
+            AllowedEffects = [];
         }
 
         public override string ToString()
@@ -152,9 +152,7 @@ namespace Foreman
 
         public string FriendlyName => DataCache.Current.GetLocalizedString("item-name", Name);
 
-        public Module(
-            string name, string category, float speedBonus, float productivityBonus,
-            float consumptionBonus, List<string>? allowedIn)
+        public Module(string name, string category, float speedBonus, float productivityBonus, float consumptionBonus, List<string>? allowedIn)
         {
             SpeedBonus = speedBonus;
             ProductivityBonus = productivityBonus;

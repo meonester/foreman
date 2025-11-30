@@ -19,9 +19,8 @@ namespace Foreman
     public class ProductionGraph
     {
         private int[,]? adjacencyMatrixCache;
-        private ModuleSelector selectedModuleStrategy = ModuleSelector.Fastest;
 
-        public List<ProductionNode> Nodes { get; } = new();
+        public List<ProductionNode> Nodes { get; } = [];
 
         public RateUnit SelectedUnit { get; set; } = RateUnit.PerSecond;
 
@@ -29,15 +28,15 @@ namespace Foreman
 
         public ModuleSelector SelectedModuleStrategy
         {
-            get => selectedModuleStrategy;
+            get;
             set
             {
-                if (selectedModuleStrategy == value)
+                if (field == value)
                     return;
-                selectedModuleStrategy = value;
+                field = value;
                 UpdateModuleStrategy();
             }
-        }
+        } = ModuleSelector.Fastest;
 
         public IEnumerable<NodeLink> GetAllNodeLinks()
         {
@@ -263,7 +262,7 @@ namespace Foreman
             public ProductionNode SourceNode { get; }
             public int Index { get; set; } = -1;
             public int LowLink { get; set; } = -1;
-            public HashSet<TarjanNode> Links { get; } = new(); //Links to other nodes
+            public HashSet<TarjanNode> Links { get; } = []; //Links to other nodes
 
             public TarjanNode(ProductionNode sourceNode)
             {
@@ -394,7 +393,7 @@ namespace Foreman
 
             {
                 if (v.LowLink == v.Index) {
-                    strongList.Add(new List<ProductionNode>());
+                    strongList.Add([]);
                     TarjanNode w;
                     do {
                         w = S.Pop();
@@ -407,7 +406,7 @@ namespace Foreman
         public List<ProductionNode> GetTopologicalSort()
         {
             int[,] matrix = AdjacencyMatrix;
-            List<ProductionNode> L = new(); //Final sorted list
+            List<ProductionNode> L = []; //Final sorted list
             List<ProductionNode> S = GetInputlessNodes().ToList();
 
             while (S.Any()) {

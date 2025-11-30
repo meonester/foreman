@@ -35,7 +35,6 @@ namespace Foreman
     {
         private readonly IReadOnlyList<Choice> allChoices;
         private readonly ObservableCollection<Choice> filteredChoices;
-        private Choice? selectedChoice;
         private Action<Choice?>? callbackMethod;
         private Popup? popup;
 
@@ -45,15 +44,14 @@ namespace Foreman
             filteredChoices = new ObservableCollection<Choice>(choices);
         }
 
-        private string? filterText;
-
         [MaybeNull]
+        [field: AllowNull, MaybeNull]
         public string FilterText
         {
-            get => filterText;
+            get;
             set
             {
-                if (SetProperty(ref filterText, value)) {
+                if (SetProperty(ref field, value)) {
                     filteredChoices.Clear();
                     foreach (var choice in allChoices) {
                         if (choice.FilterText.Contains(value, StringComparison.OrdinalIgnoreCase))
@@ -67,8 +65,8 @@ namespace Foreman
 
         public Choice? SelectedChoice
         {
-            get => selectedChoice;
-            set => SetProperty(ref selectedChoice, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public void Show(UIElement? placementTarget, PlacementMode placementMode, Action<Choice?> callback)

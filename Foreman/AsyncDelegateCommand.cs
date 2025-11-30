@@ -9,7 +9,6 @@ namespace Foreman
         private static readonly Func<bool> CanAlwaysExecute = () => true;
         private readonly Func<Task> execute;
         private readonly Func<bool> canExecute;
-        private bool isExecuting;
         private EventHandler? canExecuteChanged;
 
         public AsyncDelegateCommand(Func<Task> execute)
@@ -26,11 +25,11 @@ namespace Foreman
 
         private bool IsExecuting
         {
-            get => isExecuting;
+            get;
             set
             {
-                if (isExecuting != value) {
-                    isExecuting = value;
+                if (field != value) {
+                    field = value;
                     RaiseCanExecuteChanged();
                 }
             }
@@ -102,7 +101,6 @@ namespace Foreman
         private static readonly Func<T?, bool> CanAlwaysExecute = _ => true;
         private readonly Func<T?, Task> execute;
         private readonly Func<T?, bool> canExecute;
-        private bool isExecuting;
         private EventHandler? canExecuteChanged;
 
         public AsyncDelegateCommand(Func<T?, Task> execute)
@@ -119,11 +117,11 @@ namespace Foreman
 
         private bool IsExecuting
         {
-            get => isExecuting;
+            get;
             set
             {
-                if (isExecuting != value) {
-                    isExecuting = value;
+                if (field != value) {
+                    field = value;
                     RaiseCanExecuteChanged();
                 }
             }

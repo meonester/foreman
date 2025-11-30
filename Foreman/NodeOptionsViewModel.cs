@@ -1,4 +1,4 @@
-namespace Foreman.Views
+namespace Foreman
 {
     using System;
     using System.Collections.Generic;
@@ -13,22 +13,9 @@ namespace Foreman.Views
     public class NodeOptionsViewModel : ViewModel
     {
         private readonly BindableCollection<ModuleSlot> modules =
-            new();
+            [];
         private readonly BeaconModuleList beaconModules =
             new(true);
-
-        private bool canEditAssembler;
-        private RateType rateType;
-        private double amount;
-        private string? amountUnit;
-        private double desiredCount;
-
-        private double speedBonus;
-        private double productivityBonus;
-        private double consumptionBonus;
-        private bool canOverrideBonus;
-        private object? assembler;
-        private string? moduleStrategy;
 
         public NodeOptionsViewModel(
             ProductionNode baseNode, ProductionGraphViewModel graphViewModel)
@@ -36,7 +23,7 @@ namespace Foreman.Views
             BaseNode = baseNode;
             GraphViewModel = graphViewModel;
             Graph = graphViewModel.Graph;
-            rateType = BaseNode.RateType;
+            RateType = BaseNode.RateType;
 
             modules.ItemPropertyChanged += OnModuleSlotPropertyChanged;
             beaconModules.ItemPropertyChanged += OnModuleSlotPropertyChanged;
@@ -59,8 +46,8 @@ namespace Foreman.Views
                     break;
             }
 
-            amount = amountToShow;
-            desiredCount = BaseNode.DesiredCount;
+            Amount = amountToShow;
+            DesiredCount = BaseNode.DesiredCount;
 
             var moduleBag = BaseNode.BeaconModules;
             if (moduleBag.OverrideSpeedBonus == null &&
@@ -94,16 +81,16 @@ namespace Foreman.Views
 
         public bool CanEditAssembler
         {
-            get => canEditAssembler;
-            set => SetProperty(ref canEditAssembler, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public RateType RateType
         {
-            get => rateType;
+            get;
             set
             {
-                if (SetProperty(ref rateType, value)) {
+                if (SetProperty(ref field, value)) {
                     BaseNode.RateType = value;
                     Graph.UpdateNodeValues(BaseNode);
                 }
@@ -112,13 +99,13 @@ namespace Foreman.Views
 
         public double Amount
         {
-            get => amount;
+            get;
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Amount must be positive.");
 
-                if (SetProperty(ref amount, value)) {
+                if (SetProperty(ref field, value)) {
                     var newAmount = value;
                     if (Graph.SelectedAmountType == AmountType.Rate &&
                         Graph.SelectedUnit == RateUnit.PerMinute) {
@@ -133,20 +120,20 @@ namespace Foreman.Views
 
         public string? AmountUnit
         {
-            get => amountUnit;
-            set => SetProperty(ref amountUnit, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public double DesiredCount
         {
-            get => desiredCount;
+            get;
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), value, "Count must be positive.");
 
-                if (SetProperty(ref desiredCount, value)) {
-                    BaseNode.DesiredCount = (float)desiredCount;
+                if (SetProperty(ref field, value)) {
+                    BaseNode.DesiredCount = (float)field;
                     Graph.UpdateNodeValues(BaseNode);
                 }
             }
@@ -154,10 +141,10 @@ namespace Foreman.Views
 
         public double SpeedBonus
         {
-            get => speedBonus;
+            get;
             set
             {
-                if (SetProperty(ref speedBonus, value)) {
+                if (SetProperty(ref field, value)) {
                     if (CanOverrideBonus) {
                         BaseNode.BeaconModules.OverrideSpeedBonus = value;
                         Graph.UpdateNodeValues(BaseNode);
@@ -168,10 +155,10 @@ namespace Foreman.Views
 
         public double ProductivityBonus
         {
-            get => productivityBonus;
+            get;
             set
             {
-                if (SetProperty(ref productivityBonus, value)) {
+                if (SetProperty(ref field, value)) {
                     if (CanOverrideBonus) {
                         BaseNode.BeaconModules.OverrideProductivityBonus = value;
                         Graph.UpdateNodeValues(BaseNode);
@@ -182,10 +169,10 @@ namespace Foreman.Views
 
         public double ConsumptionBonus
         {
-            get => consumptionBonus;
+            get;
             set
             {
-                if (SetProperty(ref consumptionBonus, value)) {
+                if (SetProperty(ref field, value)) {
                     if (CanOverrideBonus) {
                         BaseNode.BeaconModules.OverrideConsumptionBonus = value;
                         Graph.UpdateNodeValues(BaseNode);
@@ -196,20 +183,20 @@ namespace Foreman.Views
 
         public bool CanOverrideBonus
         {
-            get => canOverrideBonus;
-            set => SetProperty(ref canOverrideBonus, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public object? Assembler
         {
-            get => assembler;
-            set => SetProperty(ref assembler, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public string? ModuleStrategy
         {
-            get => moduleStrategy;
-            set => SetProperty(ref moduleStrategy, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public void UpdateAssemblerButtons()
@@ -413,9 +400,6 @@ namespace Foreman.Views
 
     public class ModuleSlot : ViewModel
     {
-        private Module? module;
-        private int count;
-
         public ModuleSlot(bool isAggregated)
         {
             IsAggregated = isAggregated;
@@ -423,14 +407,14 @@ namespace Foreman.Views
 
         public ModuleSlot(Module? module)
         {
-            this.module = module;
+            this.Module = module;
             IsAggregated = false;
         }
 
         public ModuleSlot(Module module, int count)
         {
-            this.module = module;
-            this.count = count;
+            this.Module = module;
+            this.Count = count;
             IsAggregated = true;
         }
 
@@ -438,14 +422,14 @@ namespace Foreman.Views
 
         public Module? Module
         {
-            get => module;
-            set => SetProperty(ref module, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public int Count
         {
-            get => count;
-            set => SetProperty(ref count, value);
+            get;
+            set => SetProperty(ref field, value);
         }
     }
 }

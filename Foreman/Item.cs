@@ -6,16 +6,15 @@ namespace Foreman
 
     public class Item
     {
-        private BitmapSource? icon;
-
         public string Name { get; }
         public HashSet<Recipe> Recipes { get; }
 
         [AllowNull]
+        [field: AllowNull, MaybeNull]
         public BitmapSource Icon
         {
-            get => icon ?? DataCache.Current.UnknownIcon;
-            set => icon = value;
+            get => field ?? DataCache.Current.UnknownIcon;
+            set;
         }
 
         public LocalizationInfo? LocalizedName { get; set; }
@@ -26,7 +25,7 @@ namespace Foreman
         public Item(string name)
         {
             Name = name;
-            Recipes = new HashSet<Recipe>();
+            Recipes = [];
         }
 
         public override int GetHashCode()

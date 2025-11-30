@@ -1,6 +1,7 @@
 namespace Foreman.Infrastructure.Windows
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
@@ -8,7 +9,6 @@ namespace Foreman.Infrastructure.Windows
 
     public class FloatBinding : Bind, IValueConverter
     {
-        private string? effectiveStringFormat;
         private string? actualStringValue;
 
         public FloatBinding()
@@ -23,8 +23,8 @@ namespace Foreman.Infrastructure.Windows
         }
 
         public FloatBinding(PropertyPath path)
+            : base(path)
         {
-            Path = new PropertyPath(path);
             Converter = this;
         }
 
@@ -55,8 +55,9 @@ namespace Foreman.Infrastructure.Windows
             }
         }
 
+        [field: AllowNull, MaybeNull]
         private string EffectiveStringFormat =>
-            effectiveStringFormat ??= GetEffectiveStringFormat(StringFormat);
+            field ??= GetEffectiveStringFormat(StringFormat);
 
         object IValueConverter.ConvertBack(
             object value, Type targetType, object parameter, CultureInfo culture)

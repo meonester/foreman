@@ -14,22 +14,24 @@ namespace Foreman
         public Dictionary<Item, float> Ingredients { get; }
         public bool IsMissingRecipe { get; set; }
         public bool IsCyclic { get; set; }
-        private readonly BitmapSource? uniqueIcon;
 
         [AllowNull]
+        [field: AllowNull, MaybeNull]
         public BitmapSource Icon
         {
             get
             {
-                if (uniqueIcon != null) {
-                    return uniqueIcon;
+                if (field != null) {
+                    return field;
                 }
+
                 if (Results.Count == 1) {
                     return Results.Keys.First().Icon;
                 }
+
                 return DataCache.Current.UnknownIcon;
             }
-            init => uniqueIcon = value;
+            init;
         }
 
         public LocalizationInfo? LocalizedName { get; set; }

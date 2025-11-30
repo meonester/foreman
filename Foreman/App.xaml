@@ -172,7 +172,7 @@
       </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type v:NodeOptionsViewModel}">
+    <DataTemplate DataType="{x:Type f:NodeOptionsViewModel}">
       <v:NodeOptionsView/>
     </DataTemplate>
 

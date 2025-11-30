@@ -21,8 +21,6 @@ namespace Foreman
 
     public class DataCache
     {
-        private static DataCache current = new();
-
         private DataCache()
         {
             UnknownIcon = LoadUnknownIcon();
@@ -30,21 +28,21 @@ namespace Foreman
 
         public static DataCache Current
         {
-            get => current;
+            get;
             private set
             {
-                current = value;
+                field = value;
                 colorCache.Clear();
             }
-        }
+        } = new();
 
         private string DataPath => Path.Combine(Settings.Default.FactorioPath, "data");
 
         private string ModPath => Settings.Default.FactorioModPath;
 
         private Mod? coreMod;
-        public List<Mod> Mods { get; set; } = new();
-        public List<Language> Languages { get; } = new();
+        public List<Mod> Mods { get; set; } = [];
+        public List<Language> Languages { get; } = [];
 
         public string Difficulty { get; set; } = "normal";
         private const string DefaultLocale = "en";
@@ -65,12 +63,11 @@ namespace Foreman
         [AllowNull]
         public ILogger Logger
         {
-            get => logger;
-            set => logger = value ?? new DebugLogger();
-        }
+            get;
+            set => field = value ?? new DebugLogger();
+        } = new DebugLogger();
 
         private LocalizedStringDictionary localeFiles = new();
-        private ILogger logger = new DebugLogger();
 
         public Dictionary<string, Exception> FailedFiles { get; } = new();
         public Dictionary<string, Exception> FailedModRegistrations { get; } = new();
@@ -1086,7 +1083,7 @@ namespace Foreman
         private void InterpretBeacon(string name, LuaTable values)
         {
             try {
-                IEnumerable<string> allowedEffects = Enumerable.Empty<string>();
+                IEnumerable<string> allowedEffects = [];
                 if (values["allowed_effects"] is LuaTable effects)
                     allowedEffects = effects.Values.Cast<string>();
 
@@ -1221,7 +1218,7 @@ namespace Foreman
         }
 
         public static readonly List<string> LocaleCategories =
-            new() { "item-name", "fluid-name", "entity-name", "equipment-name" };
+            ["item-name", "fluid-name", "entity-name", "equipment-name"];
 
         public string GetLocalizedString(string category, string name)
         {

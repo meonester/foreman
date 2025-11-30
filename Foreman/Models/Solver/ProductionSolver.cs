@@ -70,7 +70,7 @@ namespace Foreman
             solver = GoogleSolver.Create();
             objective = solver.Objective();
             allVariables = new Dictionary<object, Variable>();
-            nodes = new List<ProductionNode>();
+            nodes = [];
         }
 
         public void AddNode(ProductionNode node)

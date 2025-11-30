@@ -5,12 +5,10 @@ namespace Foreman
 
     public abstract class GraphElement : ViewModel, IInteractiveElement
     {
-        private bool isSelected;
-
         public bool IsSelected
         {
-            get => isSelected;
-            set => SetProperty(ref isSelected, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public abstract bool IsDraggable { get; }

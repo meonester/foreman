@@ -195,7 +195,7 @@ namespace Foreman
                 result = DoString(File.ReadAllText(modPath.Path))?[0];
             } else {
                 var mod = mods[modPath.ModName];
-                var currentPath = modPath.Path.LastIndexOfAny(new[] { '/', '\\' });
+                var currentPath = modPath.Path.LastIndexOfAny(['/', '\\']);
                 mod.LuaPathContext.Push(currentPath > 0 ? modPath.Path[..currentPath] : "");
                 result = mod.Loader(this, modPath.Path);
                 mod.LuaPathContext.Pop();

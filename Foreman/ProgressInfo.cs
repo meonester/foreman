@@ -7,11 +7,6 @@ namespace Foreman
         private readonly Action<ProgressInfo> dispose;
         private readonly IProgress<string> progress;
 
-        private ProgressType progressType = ProgressType.Indeterminate;
-        private string? operation;
-        private int currentItem;
-        private int maximumItems;
-
         public ProgressInfo(Action<ProgressInfo> show, Action<ProgressInfo> dispose)
         {
             this.dispose = dispose;
@@ -21,26 +16,26 @@ namespace Foreman
 
         public ProgressType ProgressType
         {
-            get => progressType;
-            set => SetProperty(ref progressType, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = ProgressType.Indeterminate;
 
         public string? Operation
         {
-            get => operation;
-            set => SetProperty(ref operation, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public int CurrentItem
         {
-            get => currentItem;
-            set => SetProperty(ref currentItem, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public int MaximumItems
         {
-            get => maximumItems;
-            set => SetProperty(ref maximumItems, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public void Dispose()

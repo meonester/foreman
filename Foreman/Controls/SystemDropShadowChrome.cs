@@ -317,22 +317,22 @@ namespace Foreman.Controls
             double centerRight = shadowBounds.Right - ShadowDepth;
             double centerBottom = shadowBounds.Bottom - ShadowDepth;
 
-            double[] guidelineSetX = {
+            double[] guidelineSetX = [
                 centerLeft,
                 centerLeft + cornerRadius.TopLeft,
                 centerRight - cornerRadius.TopRight,
                 centerLeft + cornerRadius.BottomLeft,
                 centerRight - cornerRadius.BottomRight,
                 centerRight
-            };
-            double[] guidelineSetY = {
+            ];
+            double[] guidelineSetY = [
                 centerTop,
                 centerTop + cornerRadius.TopLeft,
                 centerTop + cornerRadius.TopRight,
                 centerBottom - cornerRadius.BottomLeft,
                 centerBottom - cornerRadius.BottomRight,
                 centerBottom
-            };
+            ];
 
             drawingContext.PushGuidelineSet(new GuidelineSet(guidelineSetX, guidelineSetY));
             cornerRadius.TopLeft += ShadowDepth;

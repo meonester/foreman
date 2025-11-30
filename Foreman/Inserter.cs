@@ -5,8 +5,6 @@ namespace Foreman
 
     public class Inserter
     {
-        private string? friendlyName;
-
         public Inserter(string name)
         {
             Name = name;
@@ -17,10 +15,11 @@ namespace Foreman
         public BitmapSource? Icon { get; set; }
 
         [AllowNull]
+        [field: AllowNull, MaybeNull]
         public string FriendlyName
         {
-            get => !string.IsNullOrWhiteSpace(friendlyName) ? friendlyName : Name;
-            set => friendlyName = value;
+            get => !string.IsNullOrWhiteSpace(field) ? field : Name;
+            set;
         }
     }
 }

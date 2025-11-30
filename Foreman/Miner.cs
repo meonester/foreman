@@ -35,7 +35,7 @@ namespace Foreman
         public Miner(string name)
             : base(name)
         {
-            ResourceCategories = new List<string>();
+            ResourceCategories = [];
             Enabled = true;
         }
 

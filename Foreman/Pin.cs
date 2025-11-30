@@ -16,14 +16,7 @@ namespace Foreman
 
     public class Pin : GraphElement
     {
-        private readonly HashSet<Connector> connectors = new();
-        private string label;
-        private ImageSource? icon;
-        private Point hotspot;
-        private Color? textColor;
-        private Color fillColor;
-        private string balloonText;
-        private bool isHighlighted;
+        private readonly HashSet<Connector> connectors = [];
 
         public Pin(PinKind kind, Item item, NodeElement node)
         {
@@ -31,8 +24,8 @@ namespace Foreman
             Item = item;
             Node = node;
             Icon = item.Icon;
-            label = string.Empty;
-            balloonText = $"{Item.FriendlyName}\nDrag to create a new connection";
+            Label = string.Empty;
+            BalloonText = $"{Item.FriendlyName}\nDrag to create a new connection";
         }
 
         public event EventHandler<EventArgs>? HotspotUpdated;
@@ -47,14 +40,14 @@ namespace Foreman
 
         public string Label
         {
-            get => label;
-            set => SetProperty(ref label, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public ImageSource? Icon
         {
-            get => icon;
-            set => SetProperty(ref icon, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public void AddConnector(Connector connector)
@@ -73,36 +66,36 @@ namespace Foreman
 
         public Point Hotspot
         {
-            get => hotspot;
+            get;
             set
             {
-                if (SetProperty(ref hotspot, value))
+                if (SetProperty(ref field, value))
                     HotspotUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public Color? TextColor
         {
-            get => textColor;
-            set => SetProperty(ref textColor, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public Color FillColor
         {
-            get => fillColor;
-            set => SetProperty(ref fillColor, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public string BalloonText
         {
-            get => balloonText;
-            private set => SetProperty(ref balloonText, value);
+            get;
+            private set => SetProperty(ref field, value);
         }
 
         public bool IsHighlighted
         {
-            get => isHighlighted;
-            set => SetProperty(ref isHighlighted, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public NodeElement? GetConnectedNode()

@@ -24,27 +24,14 @@ namespace Foreman
     {
         private readonly IMainWindow view;
 
-        private bool isEnabled;
-        private ProgressInfo? loadProgress;
         private string? currentGraphFile;
-        private List<Item> unfilteredItemList = new();
-        private List<Recipe> unfilteredRecipeList = new();
-        private Difficulty difficulty;
-        private Language? selectedLanguage;
-        private Item? selectedItem;
-        private bool showAssemblers;
-        private bool showMiners;
-        private string itemFilterText = string.Empty;
-        private string recipeFilterText = string.Empty;
-        private AmountType amountType = AmountType.FixedAmount;
-        private RateUnit selectedRateUnit = RateUnit.PerSecond;
-        private ModuleSelector selectedModuleStrategy = ModuleSelector.None;
-        private string luaOutput = string.Empty;
+        private List<Item> unfilteredItemList = [];
+        private List<Recipe> unfilteredRecipeList = [];
 
         public MainWindowViewModel(IMainWindow view)
         {
             this.view = view;
-            RecentGraphs = new MruCollection<string>();
+            RecentGraphs = [];
 
             var graph = new ProductionGraph();
             GraphViewModel = new ProductionGraphViewModel(graph);
@@ -72,14 +59,14 @@ namespace Foreman
 
         public bool IsEnabled
         {
-            get => isEnabled;
-            set => SetProperty(ref isEnabled, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public ProgressInfo? LoadProgress
         {
-            get => loadProgress;
-            set => SetProperty(ref loadProgress, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         private ProgressInfo CreateProgress()
@@ -117,122 +104,120 @@ namespace Foreman
         public AsyncDelegateCommand AddRecipesCommand { get; }
         public AsyncDelegateCommand ShowLuaLogCommand { get; }
 
-        public ObservableCollection<Language> Languages { get; } = new();
-
-        private string windowTitle = "Foreman";
+        public ObservableCollection<Language> Languages { get; } = [];
 
         public string WindowTitle
         {
-            get => windowTitle;
-            set => SetProperty(ref windowTitle, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = "Foreman";
 
         public Language? SelectedLanguage
         {
-            get => selectedLanguage;
+            get;
             set
             {
-                if (SetProperty(ref selectedLanguage, value))
+                if (SetProperty(ref field, value))
                     OnLanguageChanged();
             }
         }
 
-        public ObservableCollection<Item> ItemList { get; } = new();
+        public ObservableCollection<Item> ItemList { get; } = [];
 
         public Item? SelectedItem
         {
-            get => selectedItem;
-            set => SetProperty(ref selectedItem, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        public ObservableCollection<Recipe> RecipeList { get; } = new();
+        public ObservableCollection<Recipe> RecipeList { get; } = [];
         public IList<Recipe> SelectedRecipes { get; } = new ObservableCollection<Recipe>();
 
         public Difficulty Difficulty
         {
-            get => difficulty;
+            get;
             set
             {
-                if (SetProperty(ref difficulty, value))
+                if (SetProperty(ref field, value))
                     DifficultyChanged().Forget();
             }
         }
 
         public bool ShowAssemblers
         {
-            get => showAssemblers;
+            get;
             set
             {
-                if (SetProperty(ref showAssemblers, value))
+                if (SetProperty(ref field, value))
                     OnShowAssemblersChanged();
             }
         }
 
         public bool ShowMiners
         {
-            get => showMiners;
+            get;
             set
             {
-                if (SetProperty(ref showMiners, value))
+                if (SetProperty(ref field, value))
                     OnShowMinersChanged();
             }
         }
 
         public string ItemFilterText
         {
-            get => itemFilterText;
+            get;
             set
             {
-                if (SetProperty(ref itemFilterText, value))
+                if (SetProperty(ref field, value))
                     OnItemFilterTextChanged();
             }
-        }
+        } = string.Empty;
 
         public string RecipeFilterText
         {
-            get => recipeFilterText;
+            get;
             set
             {
-                if (SetProperty(ref recipeFilterText, value))
+                if (SetProperty(ref field, value))
                     OnRecipeFilterTextChanged();
             }
-        }
+        } = string.Empty;
 
         public AmountType AmountType
         {
-            get => amountType;
+            get;
             set
             {
-                if (SetProperty(ref amountType, value))
+                if (SetProperty(ref field, value))
                     OnAmountTypeChanged();
             }
-        }
+        } = AmountType.FixedAmount;
 
         public RateUnit SelectedRateUnit
         {
-            get => selectedRateUnit;
+            get;
             set
             {
-                if (SetProperty(ref selectedRateUnit, value))
+                if (SetProperty(ref field, value))
                     OnSelectedRateUnitChanged();
             }
-        }
+        } = RateUnit.PerSecond;
 
         public ModuleSelector SelectedModuleStrategy
         {
-            get => selectedModuleStrategy;
+            get;
             set
             {
-                if (SetProperty(ref selectedModuleStrategy, value))
+                if (SetProperty(ref field, value))
                     OnSelectedModuleStrategyChanged();
             }
-        }
+        } = ModuleSelector.None;
 
         public string LuaOutput
         {
-            get => luaOutput;
-            set => SetProperty(ref luaOutput, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         void ILogger.Log(string format, params object?[] args)
         {

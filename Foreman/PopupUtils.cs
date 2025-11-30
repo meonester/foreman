@@ -3,6 +3,7 @@ namespace Foreman
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
@@ -23,7 +24,7 @@ namespace Foreman
             var rightCenter = new Point(targetSize.Width + offset.X, centerY + offset.Y);
             var leftPlacement = new CustomPopupPlacement(leftCenter, PopupPrimaryAxis.Vertical);
             var rightPlacement = new CustomPopupPlacement(rightCenter, PopupPrimaryAxis.Vertical);
-            return new[] { leftPlacement, rightPlacement };
+            return [leftPlacement, rightPlacement];
         }
 
         public static CustomPopupPlacement[] RightCenteredPlacement(
@@ -34,7 +35,7 @@ namespace Foreman
             var rightCenter = new Point(targetSize.Width + offset.X, centerY + offset.Y);
             var leftPlacement = new CustomPopupPlacement(leftCenter, PopupPrimaryAxis.Vertical);
             var rightPlacement = new CustomPopupPlacement(rightCenter, PopupPrimaryAxis.Vertical);
-            return new[] { rightPlacement, leftPlacement };
+            return [rightPlacement, leftPlacement];
         }
 
         public static CustomPopupPlacement[] TopCenteredPlacement(
@@ -45,7 +46,7 @@ namespace Foreman
             var bottomCenter = new Point(centerX + offset.X, targetSize.Height + offset.Y);
             var topPlacement = new CustomPopupPlacement(topCenter, PopupPrimaryAxis.Horizontal);
             var bottomPlacement = new CustomPopupPlacement(bottomCenter, PopupPrimaryAxis.Horizontal);
-            return new[] { topPlacement, bottomPlacement };
+            return [topPlacement, bottomPlacement];
         }
 
         public static CustomPopupPlacement[] BottomCenteredPlacement(
@@ -56,14 +57,13 @@ namespace Foreman
             var bottomCenter = new Point(centerX + offset.X, targetSize.Height + offset.Y);
             var topPlacement = new CustomPopupPlacement(topCenter, PopupPrimaryAxis.Horizontal);
             var bottomPlacement = new CustomPopupPlacement(bottomCenter, PopupPrimaryAxis.Horizontal);
-            return new[] { bottomPlacement, topPlacement };
+            return [bottomPlacement, topPlacement];
         }
 
-        [ThreadStatic]
-        private static Stack<Popup>? nestedPopups;
-
+        [field: AllowNull, MaybeNull]
+        [field: ThreadStatic]
         private static Stack<Popup> NestedPopups =>
-            nestedPopups ??= new Stack<Popup>();
+            field ??= new Stack<Popup>();
 
         public static Popup CreatePopup(object content)
         {
@@ -160,14 +160,14 @@ namespace Foreman
             var popup = Expression.Parameter(typeof(Popup));
             var flagParameter = Expression.Parameter(typeof(int));
             var value = Expression.Parameter(typeof(bool));
-            var indexer = typeof(BitVector32).GetProperty("Item", new[] { typeof(int) });
+            var indexer = typeof(BitVector32).GetProperty("Item", [typeof(int)]);
 
             var lambda = Expression.Lambda<Action<Popup, int, bool>>(
                 Expression.Assign(
                     Expression.MakeIndex(
                         Expression.Field(popup, cacheValidField),
                         indexer,
-                        new[] { flagParameter }),
+                        [flagParameter]),
                     value),
                 popup, flagParameter, value);
             return lambda.Compile();

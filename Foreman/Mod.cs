@@ -3,6 +3,7 @@ namespace Foreman
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -19,7 +20,6 @@ namespace Foreman
         private bool loaderRegistered;
         private Lua? currLua;
         private ZipArchive? archive;
-        private Stack<string>? luaPathContext;
 
         public Mod(string modPath, bool isZippedMod)
         {
@@ -36,8 +36,8 @@ namespace Foreman
         public string? Title { get; init; }
         public string? Author { get; init; }
 
-        public List<string> Dependencies { get; } = new();
-        public List<ModDependency> ParsedDependencies { get; } = new();
+        public List<string> Dependencies { get; } = [];
+        public List<ModDependency> ParsedDependencies { get; } = [];
 
         public bool Enabled {
             get; 
@@ -46,8 +46,10 @@ namespace Foreman
 
         private ZipArchive Archive =>
             archive ??= new ZipArchive(File.OpenRead(ModPath));
+
+        [field: AllowNull, MaybeNull]
         public Stack<string> LuaPathContext =>
-            luaPathContext ??=  new Stack<string>();
+            field ??=  new Stack<string>();
 
         public bool SatisfiesDependency(ModDependency dep)
         {

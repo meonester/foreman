@@ -3,6 +3,7 @@ namespace Foreman.Extensions
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
@@ -58,9 +59,8 @@ namespace Foreman.Extensions
 
     public abstract class FreezableBindingBase : Freezable
     {
-        private Binding? binding;
-
-        protected Binding Binding => binding ??= new Binding();
+        [field: AllowNull, MaybeNull]
+        protected Binding Binding => field ??= new Binding();
 
         [DefaultValue(null)]
         public object AsyncState

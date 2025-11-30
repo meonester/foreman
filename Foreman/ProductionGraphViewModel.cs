@@ -42,9 +42,9 @@ namespace Foreman
                 Elements.Add(sourceElement.Clone());
         }
 
-        public ObservableCollection<GraphElement> Elements { get; } = new();
+        public ObservableCollection<GraphElement> Elements { get; } = [];
 
-        public ObservableCollection<GraphElement> SelectedItems { get; } = new();
+        public ObservableCollection<GraphElement> SelectedItems { get; } = [];
 
         [AllowNull]
         public ProductionGraph Graph
@@ -137,7 +137,7 @@ namespace Foreman
             if (nodeOrder.Any()) {
                 var nodePositions = new List<ProductionNode>[nodeOrder.Count];
                 for (int i = 0; i < nodePositions.Length; ++i)
-                    nodePositions[i] = new List<ProductionNode>();
+                    nodePositions[i] = [];
 
                 nodePositions.First().AddRange(nodeOrder.OfType<ConsumerNode>());
                 foreach (RecipeNode node in nodeOrder.OfType<RecipeNode>()) {

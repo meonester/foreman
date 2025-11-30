@@ -9,8 +9,7 @@ namespace Foreman
 
     public class MruCollection<T> : IReadOnlyList<T>, INotifyCollectionChanged
     {
-        private readonly ObservableCollection<T> items = new();
-        private int capacity = 10;
+        private readonly ObservableCollection<T> items = [];
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged
         {
@@ -20,14 +19,14 @@ namespace Foreman
 
         public int Capacity
         {
-            get => capacity;
+            get;
             set
             {
-                capacity = value;
-                while (items.Count > capacity)
+                field = value;
+                while (items.Count > field)
                     items.RemoveAt(items.Count - 1);
             }
-        }
+        } = 10;
 
         public int Count => items.Count;
 

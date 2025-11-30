@@ -25,10 +25,10 @@ namespace Foreman.Views
 
         protected override void OnDetaching()
         {
-            AssociatedObject.Drop += OnDrop;
-            AssociatedObject.DragLeave += OnDragLeave;
-            AssociatedObject.DragOver += OnDragOver;
-            AssociatedObject.DragEnter += OnDragEnter;
+            AssociatedObject.Drop -= OnDrop;
+            AssociatedObject.DragLeave -= OnDragLeave;
+            AssociatedObject.DragOver -= OnDragOver;
+            AssociatedObject.DragEnter -= OnDragEnter;
             base.OnDetaching();
         }
 
@@ -59,7 +59,7 @@ namespace Foreman.Views
                 dragAdorner.Position = e.GetPosition(AssociatedObject);
         }
 
-        private void OnDragLeave(object sender, EventArgs e)
+        private void OnDragLeave(object sender, DragEventArgs e)
         {
             RemoveDragAdorner();
         }

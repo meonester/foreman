@@ -20,10 +20,10 @@ namespace Foreman.Views
         }
 
         public bool ModsChanged { get; private set; }
-        public ObservableCollection<Assembler> Assemblers { get; } = new();
-        public ObservableCollection<Mod> Mods { get; } = new();
-        public ObservableCollection<Miner> Miners { get; } = new();
-        public ObservableCollection<Module> Modules { get; } = new();
+        public ObservableCollection<Assembler> Assemblers { get; } = [];
+        public ObservableCollection<Mod> Mods { get; } = [];
+        public ObservableCollection<Miner> Miners { get; } = [];
+        public ObservableCollection<Module> Modules { get; } = [];
 
         private void OnModChecked(object sender, RoutedEventArgs args)
         {

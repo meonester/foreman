@@ -130,16 +130,16 @@ namespace Foreman
                 case ProcessorArchitecture.Amd64:
                     offset = repAddr.ToInt64() - orgAddr.ToInt64() - 5;
                     if (offset is >= int.MinValue and <= int.MaxValue) {
-                        jumpInst = new byte[] {
+                        jumpInst = [
                             0xE9, // JMP rel32
                             (byte)(offset & 0xFF),
                             (byte)((offset >> 8) & 0xFF),
                             (byte)((offset >> 16) & 0xFF),
                             (byte)((offset >> 24) & 0xFF)
-                        };
+                        ];
                     } else {
                         offset = repAddr.ToInt64();
-                        jumpInst = new byte[] {
+                        jumpInst = [
                             0x48, 0xB8, // MOV moffs64,rax
                             (byte)(offset & 0xFF),
                             (byte)((offset >> 8) & 0xFF),
@@ -150,19 +150,19 @@ namespace Foreman
                             (byte)((offset >> 48) & 0xFF),
                             (byte)((offset >> 56) & 0xFF),
                             0xFF, 0xE0 // JMP rax
-                        };
+                        ];
                     }
                     break;
 
                 case ProcessorArchitecture.X86:
                     offset = repAddr.ToInt32() - orgAddr.ToInt32() - 5;
-                    jumpInst = new byte[] {
+                    jumpInst = [
                         0xE9, // JMP rel32
                         (byte)(offset & 0xFF),
                         (byte)((offset >> 8) & 0xFF),
                         (byte)((offset >> 16) & 0xFF),
                         (byte)((offset >> 24) & 0xFF)
-                    };
+                    ];
                     break;
 
                 default:

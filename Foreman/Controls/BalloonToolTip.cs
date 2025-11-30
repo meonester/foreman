@@ -97,9 +97,8 @@ namespace Foreman.Controls
                 case Direction.Right:
                     return PopupUtils.LeftCenteredPlacement(popupsize, targetsize, offset);
                 default:
-                    return Array.Empty<CustomPopupPlacement>();
+                    return [];
             }
-
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -113,14 +112,14 @@ namespace Foreman.Controls
                 return;
 
             DependencyObject? visualRoot = element.FindVisualRoot();
-            if (visualRoot != null) {
-                popup = LogicalTreeHelper.GetParent(visualRoot) as Popup;
-                if (popup != null) {
-                    popup.Opened += OnPopupOpenedOrClosed;
-                    popup.Closed += OnPopupOpenedOrClosed;
-                    UpdatePopupAnimation(popup);
-                }
-            }
+            if (visualRoot == null) return;
+
+            popup = LogicalTreeHelper.GetParent(visualRoot) as Popup;
+            if (popup == null) return;
+
+            popup.Opened += OnPopupOpenedOrClosed;
+            popup.Closed += OnPopupOpenedOrClosed;
+            UpdatePopupAnimation(popup);
         }
 
         private static void OnPopupOpenedOrClosed(object? sender, EventArgs e)
@@ -249,6 +248,7 @@ namespace Foreman.Controls
                         return target;
                     lastChecked = null;
                 }
+
                 return null;
             }
             set
@@ -274,6 +274,7 @@ namespace Foreman.Controls
                         return target;
                     lastMouseDirectlyOver = null;
                 }
+
                 return null;
             }
             set
@@ -297,6 +298,7 @@ namespace Foreman.Controls
                         return target;
                     lastMouseOverWithToolTip = null;
                 }
+
                 return null;
             }
             set
@@ -387,11 +389,13 @@ namespace Foreman.Controls
                     o = args.TargetElement;
                     return true;
                 }
+
                 if (args.KeepCurrentActive) {
                     o = null;
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -497,9 +501,7 @@ namespace Foreman.Controls
                 ownsToolTip = false;
             } else if (currentToolTip == null || !ownsToolTip) {
                 var binding = new Binding {
-                    Path = new PropertyPath(ToolTipService.ToolTipProperty),
-                    Source = obj,
-                    Mode = BindingMode.OneWay
+                    Path = new PropertyPath(ToolTipService.ToolTipProperty), Source = obj, Mode = BindingMode.OneWay
                 };
                 currentToolTip = new BalloonToolTip();
                 currentToolTip.SetValue(ServiceOwnedProperty, true);
@@ -534,6 +536,7 @@ namespace Foreman.Controls
                         if (ownsToolTip)
                             BindingOperations.ClearBinding(currentToolTip, ContentControl.ContentProperty);
                     }
+
                     currentToolTip = null;
                 }
             }
@@ -617,7 +620,7 @@ namespace Foreman.Controls
             // return false;
             return Expression.Lambda<Func<InputEventArgs, bool>>(
                 Expression.Block(
-                    new[] { input },
+                    [input],
                     Expression.IfThen(
                         Expression.Equal(
                             Expression.Property(inputEventArgs, nameof(InputEventArgs.RoutedEvent)),

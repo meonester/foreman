@@ -174,7 +174,7 @@ namespace Foreman
 
             protected override IEnumerable<Module> AvailableModules()
             {
-                return Enumerable.Empty<Module>();
+                return [];
             }
 
             public override ModuleSelector Clone()
@@ -254,7 +254,7 @@ namespace Foreman
 
         public ModuleSet()
         {
-            modules = new List<Module?>();
+            modules = [];
         }
 
         public ModuleSet(IEnumerable<Module?> modules)
@@ -277,7 +277,7 @@ namespace Foreman
 
         protected override IEnumerable<Module> AvailableModules()
         {
-            return Enumerable.Empty<Module>();
+            return [];
         }
 
         public override IEnumerable<Module> For(Assembler assembler, Recipe recipe, int moduleSlots)
